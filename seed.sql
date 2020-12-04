@@ -1,7 +1,23 @@
 DROP DATABASE employeeDB;
 CREATE DATABASE employeeDB;
 
-USE employeeDB
+USE employeeDB;
+
+CREATE TABLE department_table (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE role_table (
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(30) NOT NULL,
+    salary DECIMAL NOT NULL, 
+    department_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (department_id) REFERENCES department_table (id)
+);
+
 CREATE TABLE employee_table(
     id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
@@ -11,52 +27,38 @@ CREATE TABLE employee_table(
     PRIMARY KEY (id),
     FOREIGN KEY (role_id) REFERENCES role_table (id),
     FOREIGN KEY (manager_id) REFERENCES employee_table (id)
-)
-
-CREATE TABLE role_table (
-    id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(30) NOT NULL,
-    salary DECIMAL NOT NULL, 
-    department_id INT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (department_id) REFERENCES department_table (id)
-)
-
-CREATE TABLE department_table (
-    id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL,
-    PRIMARY KEY (id)
-)
+);
 
 INSERT INTO department_table (name)
-VALUES  ("Adventurers"),
-        ("Theives Guild"),
-        ("Nobility");
+VALUES  
+("Adventurers"),
+("Theives Guild"),
+("Nobility");
 
 INSERT INTO role_table (title, salary, department_id)
 VALUES 
-("Paladin", 10, 2),
-("Barbarian", 1, 0),
-("Bard", 30, 2),
-("Rogue", 10, 1),
-("Sorcerer", 10, 0),
-("Warlock", 15, 1),
-("Wizard", 30, 2),
-("Druic", 5, 0),
-("Monk", 5, 1),
-("Fighter", 10, 0),
-("Ranger", 10, 1);
+("Paladin", 10, 3),
+("Barbarian", 1, 1),
+("Bard", 30, 3),
+("Rogue", 10, 2),
+("Sorcerer", 10, 1),
+("Warlock", 15, 2),
+("Wizard", 30, 3),
+("Druic", 5, 1),
+("Monk", 5, 2),
+("Fighter", 10, 1),
+("Ranger", 10, 2);
 
 INSERT INTO employee_table(first_name, last_name, role_id, manager_id)
 VALUES 
-("Fredrick", "Firegut", 8, NULL),
-("Holy", "Lothar", 0, 0),
-("Bruticus", "The Bloody", 1, 0),
-("Taleweaver", "Drimmithoy", 2, 0),
-("Sneaks", "Around", 3, 0),
-("Power", "Overwhelming", 4, 0),
-("Unholy", "Bothar", 5, 0),
-("Percious", "Bookwatcher", 6, 0),
-("Tree", "Stick", 7, 0),
-("Private", "Ryan", 9, 0),
-("Legolas", "The Elf", 10, 0),
+("Fredrick", "Firegut", 9, NULL),
+("Holy", "Lothar", 1, 1),
+("Bruticus", "The Bloody", 2, 1),
+("Taleweaver", "Drimmithoy", 3, 1),
+("Sneaks", "Around", 4, 1),
+("Power", "Overwhelming", 5, 1),
+("Unholy", "Bothar", 6, 1),
+("Percious", "Bookwatcher", 7, 1),
+("Tree", "Stick", 8, 1),
+("Private", "Ryan", 10, 1),
+("Legolas", "The Elf", 11, 1);
