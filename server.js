@@ -46,15 +46,15 @@ function startQ() {
 
 
 
-// function getEmployees(byType){
-//     console.log("by Type " +byType); 
-//     let query ="SELECT * FROM employee_table;";
-//     console.log("here")
-//     console.log(query);
-//     connection.query(query, function(err, res){
-//         if (err) throw err;
-//         console.table(res);
-//         startQ()
-//     });
-// }
+function getEmployees(byType){
+    console.log("by Type " +byType); 
+    let query ="SELECT * FROM employee_table;";
+    console.log("here")
+    console.log(query);
+    connection.query(query, function(err, res){
+        if (err) throw err;
+        console.table(res);
+        startQ()
+    });
+}
 
