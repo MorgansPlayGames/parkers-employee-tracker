@@ -17,31 +17,31 @@ connection.connect(function(err) {
 });
 
 function startQ() {
-    // inquirer
-    // .prompt(q)
-    // .then(answer => {
-    //     console.log(answer)
-    //     switch(answer.homeBase){
-    //         case 'view all employees' : getEmployees(); break;
-    //         case 'view all employees by department' : getEmployees('department'); break;
-    //         case 'view all employees by manager' : getEmployees('manager'); break;
-    //         case 'add employee' : addEmployee(); break;
-    //         case 'add department' : addDepartment(); break;
-    //         case 'add role' : addRole(); break;
-    //         case 'remove employee' : removeEmployee(); break;
-    //         case 'remove role' : removeRole(); break;
-    //         case 'remove department' : removeDepartment(); break;
-    //         case 'update employee role' : updateRole(); break;
-    //         case 'update employee manager' : updateManager(); break;
-    //         case 'view all roles' : viewRoles(); break;
-    //         case 'view all departments' : viewDepartments(); break;
-    //         case 'view budget' : viewBudget(); break;
-    //         case 'quit' : break;
-    //     }
-    // })
-    // .catch(err => {
-    //     if(err) throw err;
-    // });
+    inquirer
+    .prompt(q)
+    .then(answer => {
+        console.log(answer)
+        switch(answer.homeBase){
+            case 'view all employees' : getEmployees(); break;
+            case 'view all employees by department' : getEmployees('department'); break;
+            case 'view all employees by manager' : getEmployees('manager'); break;
+            case 'add employee' : addEmployee(); break;
+            case 'add department' : addDepartment(); break;
+            case 'add role' : addRole(); break;
+            case 'remove employee' : removeEmployee(); break;
+            case 'remove role' : removeRole(); break;
+            case 'remove department' : removeDepartment(); break;
+            case 'update employee role' : updateRole(); break;
+            case 'update employee manager' : updateManager(); break;
+            case 'view all roles' : viewRoles(); break;
+            case 'view all departments' : viewDepartments(); break;
+            case 'view budget' : viewBudget(); break;
+            case 'quit' : break;
+        }
+    })
+    .catch(err => {
+        if(err) throw err;
+    });
 }
 
 
