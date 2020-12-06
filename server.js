@@ -48,13 +48,22 @@ function startQ() {
 
 function getEmployees(byType){
     console.log("by Type " +byType); 
-    let query ="SELECT * FROM employee_table;";
-    console.log("here")
-    console.log(query);
+    query ="SELECT first_name, last_name, title, salary, " +
+    "name as department_name FROM employee LEFT JOIN role ON role_id = role.id " +
+    "LEFT JOIN department ON department_id = department.id";
+    if(byType === "department") {query += " ORDER BY department_name";}
+    if(byType === "manager") {
+        query ="SELECT t.first_name, t.last_name, e.first_name as manager_name, e.last_name as manager_surname" +
+        " FROM employee as t LEFT JOIN employee as e ON t.manager_id = e.id"
+    }
     connection.query(query, function(err, res){
         if (err) throw err;
         console.table(res);
         startQ()
     });
+}
+
+function addEmployee(){
+
 }
 
