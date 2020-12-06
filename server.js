@@ -119,14 +119,12 @@ function addEmployee(dept){
     
 }
 
-
-
 function addDepartment(){
     inquirer
-        .prompt(queryList.addDepartment)
+        .prompt(q.addDepartment)
         .then(answer => {
-        console.log("Need to push to server")
-        console.log(answer);
+            console.log("Need to push to server")
+            console.log(answer);
         startQ()
         })
         .catch(err => {
@@ -137,9 +135,22 @@ function addDepartment(){
 function addRole(){
     connection.query(queryList.deptList, function(err, res){
         if (err) throw err;
-        let deptList = res.map(dept => dept.name);
-        let queryAdd = new q.queryAdd("department", "Which department is this employee in?", deptList)
-        choices.push(queryAdd);
+        let deptList = res;
+        let deptListNames = res.map(dept => dept.name);
+        let queryAdd = new q.queryAdd("department", "Which department is this role in?", deptListNames)
+        let choices = [q.addRole, queryAdd];
+        inquirer
+            .prompt(choices)
+            .then(answer => {
+                const newRole = answer;
+                newRole.departmentId = deptList.filter(dept => dept.name === newRole.department).map(id => id.id).shift();
+                console.log("Need to push to server")
+                console.log(newRole);
+                startQ()
+            })
+            .catch(err => {
+            if(err) throw err;
+            });
     });
 }
 
