@@ -71,6 +71,13 @@ function addEmployee(){
         let queryAdd = new q.queryAdd("department", "Which department is this employee in?", deptList)
         choices.push(queryAdd);
     });
+    connection.query(queryList.peopleList, function(err, res){
+        if (err) throw err;
+        let employeeList = res.map(employee => employee.name);
+        employeeList.push('none');
+        let queryAdd = new q.queryAdd("manager", "does this employee have a manager?", employeeList)
+        choices.push(queryAdd);
+    });
     connection.query(queryList.roleList, function(err, res){
         if (err) throw err;
         let roleList = res.map(role => role.title);
