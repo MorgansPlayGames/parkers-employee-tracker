@@ -26,7 +26,7 @@ function startQ() {
             case 'view all employees' : getEmployees(); break;
             case 'view all employees by department' : getEmployees('department'); break;
             case 'view all employees by manager' : getEmployees('manager'); break;
-            case 'add employee' : addEmployee(); break;
+            case 'add employee' : getEmployeeDept(); break;
             case 'add department' : addDepartment(); break;
             case 'add role' : addRole(); break;
             case 'remove employee' : removeEmployee(); break;
@@ -63,45 +63,84 @@ function getEmployees(byType){
     });
 }
 
-function addEmployee(){
-    let choices = q.addEmployee
+function getEmployeeDept(){
+    connection.query(queryList.deptList, function(err, res){
+        if (err) throw err;
+        let depts = res;
+        let deptNameList = res.map(dept => dept.name);
+        let query = new q.queryAdd("department", "Which department is this employee in?", deptNameList);
+        let choices = [];
+        choices.push(query);
+        inquirer
+            .prompt(choices)
+            .then(answer => {
+                console.log(answer);
+                let dept = depts.filter(d => d.name === answer.department);
+                addEmployee(dept);
+            })
+            .catch(err => {
+                if(err) throw err;
+                //quit function?
+            });
+    });
+}
+
+function addEmployee(dept){
+    let choices = q.addEmployee;
+    let deptId = dept.map(id => id.id)
+    let roleQuery = queryList.roleList + " WHERE department_id = " + deptId;
+    let managerList 
+    connection.query(queryList.peopleList, function(err, res){
+        if (err) throw err;
+        managerList = res;
+        let employeeList = res.map(employee => employee.name);
+        employeeList.push('none');
+        let queryAdd = new q.queryAdd("manager", "does this employee have a manager?", employeeList)
+        choices.push(queryAdd);
+    });
+    connection.query(roleQuery, function(err, res){
+        if (err) throw err;
+        roleList = res.map(role => role.title)
+        choices.push(new q.queryAdd('role', 'What is this employees title?', roleList));  
+        inquirer
+            .prompt(choices)
+            .then(answer => {
+            let newPerson = answer;
+            newPerson.managerId = managerList.filter(employee => employee.name === newPerson.manager).map(id => id.id).shift();
+            newPerson.departmentId = dept.map(id => id.id).shift();
+            console.log("Need to push to server")
+            console.log(newPerson);
+            startQ();
+            })
+            .catch(err => {
+            if(err) throw err;
+            });
+    });
+    
+}
+
+
+
+function addDepartment(){
+    inquirer
+        .prompt(queryList.addDepartment)
+        .then(answer => {
+        console.log("Need to push to server")
+        console.log(answer);
+        startQ()
+        })
+        .catch(err => {
+        if(err) throw err;
+        });
+}
+
+function addRole(){
     connection.query(queryList.deptList, function(err, res){
         if (err) throw err;
         let deptList = res.map(dept => dept.name);
         let queryAdd = new q.queryAdd("department", "Which department is this employee in?", deptList)
         choices.push(queryAdd);
     });
-    connection.query(queryList.peopleList, function(err, res){
-        if (err) throw err;
-        let employeeList = res.map(employee => employee.name);
-        employeeList.push('none');
-        let queryAdd = new q.queryAdd("manager", "does this employee have a manager?", employeeList)
-        choices.push(queryAdd);
-    });
-    connection.query(queryList.roleList, function(err, res){
-        if (err) throw err;
-        let roleList = res.map(role => role.title);
-        let queryAdd = new q.queryAdd('role', 'What is this employees title?', roleList);
-        choices.push(queryAdd);  
-        inquirer
-            .prompt(choices)
-            .then(answer => {
-            console.log(answer);
-            })
-            .catch(err => {
-            if(err) throw err;
-            });  
-    });
-         
-}
-
-
-function addDepartment(){
-
-}
-
-function addRole(){
-
 }
 
 function removeEmployee(){
