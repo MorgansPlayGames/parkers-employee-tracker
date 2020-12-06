@@ -50,7 +50,7 @@ function startQ() {
 
 function getEmployees(byType){
     console.log("by Type " +byType); 
-    query = queryList.getEmployees
+    query = queryList.employeeList
     
     if(byType === "department") {query += " ORDER BY department_name";}
     if(byType === "manager") {
@@ -90,7 +90,7 @@ function addEmployee(dept){
     let deptId = dept.map(id => id.id)
     let roleQuery = queryList.roleList + " WHERE department_id = " + deptId;
     let managerList 
-    connection.query(queryList.peopleList, function(err, res){
+    connection.query(queryList.managerList, function(err, res){
         if (err) throw err;
         managerList = res;
         let employeeList = res.map(employee => employee.name);
@@ -100,23 +100,39 @@ function addEmployee(dept){
     });
     connection.query(roleQuery, function(err, res){
         if (err) throw err;
-        roleList = res.map(role => role.title)
-        choices.push(new q.queryAdd('role', 'What is this employees title?', roleList));  
+        roleList = res
+        choices.push(new q.queryAdd('role', 'What is this employees title?', roleList.map(role => role.title)));  
         inquirer
             .prompt(choices)
             .then(answer => {
-            let newPerson = answer;
-            newPerson.managerId = managerList.filter(employee => employee.name === newPerson.manager).map(id => id.id).shift();
-            newPerson.departmentId = dept.map(id => id.id).shift();
-            console.log("Need to push to server")
-            console.log(newPerson);
-            startQ();
+                let newPerson = answer;
+                managerId = managerList.filter(e => e.name === newPerson.manager).map(id => id.id).shift();
+                if (managerId){
+                    newPerson.managerId = managerId;
+                }else{
+                    newPerson.managerId = null;
+                }
+                newPerson.roleId = roleList.filter(r => r.title === newPerson.role).map(id => id.id).shift();
+                
+                connection.query(
+                    queryList.postEmployee, 
+                    {
+                        first_name:newPerson.firstName,
+                        last_name:newPerson.lastName,
+                        role_id:newPerson.roleId,
+                        manager_id:newPerson.managerId
+                    },
+                    function(err, res){
+                        if (err) throw err;
+                        console.log(newPerson.firstName + " added");
+                        startQ();
+                    }
+                )
             })
             .catch(err => {
             if(err) throw err;
             });
     });
-    
 }
 
 function addDepartment(){
@@ -143,7 +159,7 @@ function addRole(){
             .prompt(choices)
             .then(answer => {
                 const newRole = answer;
-                newRole.departmentId = deptList.filter(dept => dept.name === newRole.department).map(id => id.id).shift();
+                newRole.departmentId = deptList.filter(d => d.name === newRole.department).map(id => id.id).shift();
                 console.log("Need to push to server")
                 console.log(newRole);
                 startQ()
@@ -179,10 +195,19 @@ function updateManager(){
 }
 
 function viewRoles(){
-
+    connection.query(queryList.roleListDept, function(err, res){
+        if(err) throw err;
+        console.table(res);
+        startQ();
+    })
 }
 
 function viewDepartments(){
+    connection.query(queryList.deptList, function(err, res){
+        if(err) throw err;
+        console.table(res);
+        startQ();
+    })
 
 }
 

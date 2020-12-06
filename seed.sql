@@ -3,39 +3,39 @@ CREATE DATABASE employeeDB;
 
 USE employeeDB;
 
-CREATE TABLE department_table (
+CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE role_table (
+CREATE TABLE role (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL, 
     department_id INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (department_id) REFERENCES department_table (id)
+    FOREIGN KEY (department_id) REFERENCES department (id)
 );
 
-CREATE TABLE employee_table(
+CREATE TABLE employee (
     id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INT NOT NULL,
     manager_id INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (role_id) REFERENCES role_table (id),
-    FOREIGN KEY (manager_id) REFERENCES employee_table (id)
+    FOREIGN KEY (role_id) REFERENCES role (id),
+    FOREIGN KEY (manager_id) REFERENCES employee (id)
 );
 
-INSERT INTO department_table (name)
+INSERT INTO department (name)
 VALUES  
 ("Adventurers"),
 ("Theives Guild"),
 ("Nobility");
 
-INSERT INTO role_table (title, salary, department_id)
+INSERT INTO role (title, salary, department_id)
 VALUES 
 ("Paladin", 10, 3),
 ("Barbarian", 1, 1),
@@ -49,7 +49,7 @@ VALUES
 ("Fighter", 10, 1),
 ("Ranger", 10, 2);
 
-INSERT INTO employee_table(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES 
 ("Fredrick", "Firegut", 9, NULL),
 ("Holy", "Lothar", 1, 1),
