@@ -171,7 +171,26 @@ function addRole(){
 }
 
 function removeEmployee(){
-
+    connection.query(queryList.managerList, function(err, res){
+        if (err) throw err;
+        let choices = []
+        let list = res
+        let nameList = res.map(name => name.name);
+        choices.push(new q.queryAdd("delete", "Which employee would you like to delete?", nameList))
+        inquirer
+            .prompt(choices)
+            .then(answer => {
+                let id = list.filter(e => e.name === answer.delete).map(id => id.id).shift()
+                connection.query(
+                    queryList.deleteEmployee,
+                    {id:id},
+                    function(err, res){
+                        if (err) throw err;
+                        console.log("Employee deleted.")
+                        startQ();
+                    });
+            });
+    });
 }
 
 function removeDepartment(){
