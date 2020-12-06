@@ -18,7 +18,7 @@ connection.connect(function(err) {
 
 function startQ() {
     inquirer
-    .prompt(q)
+    .prompt(q.homeBase)
     .then(answer => {
         console.log(answer)
         switch(answer.homeBase){
@@ -33,6 +33,7 @@ function startQ() {
             case 'remove department' : removeDepartment(); break;
             case 'update employee role' : updateRole(); break;
             case 'update employee manager' : updateManager(); break;
+            case 'update employee department' : updateDepartment(); break;
             case 'view all roles' : viewRoles(); break;
             case 'view all departments' : viewDepartments(); break;
             case 'view budget' : viewBudget(); break;
@@ -64,6 +65,77 @@ function getEmployees(byType){
 }
 
 function addEmployee(){
+    const query = "SELECT name, id FROM department"
+    const query2 = "SELECT title, id FROM role"
+    let choices = q.addEmployee
+    connection.query(query, function(err, res){
+        if (err) throw err;
+        let deptList = res.map(dept => dept.name);
+        let queryAdd = new q.queryAdd("department", "Which department is this employee in?", deptList)
+        choices.push(queryAdd);
+    });
+    connection.query(query2, function(err, res){
+        if (err) throw err;
+        let roleList = res.map(role => role.title);
+        let queryAdd = new q.queryAdd('role', 'What is this employees title?', roleList);
+        choices.push(queryAdd);  
+        inquirer
+            .prompt(choices)
+            .then(answer => {
+            console.log(answer);
+            })
+            .catch(err => {
+            if(err) throw err;
+            });  
+    });
+         
+}
+
+
+function addDepartment(){
 
 }
 
+function addRole(){
+
+}
+
+function removeEmployee(){
+
+}
+
+function removeDepartment(){
+
+}
+
+function removeRole(){
+
+}
+
+function updateRole(){
+
+}
+
+function updateDepartment(){
+
+}
+
+function updateManager(){
+
+}
+
+function viewRoles(){
+
+}
+
+function viewDepartments(){
+
+}
+
+function viewBudget(){
+
+}
+
+function quit(){
+
+}
