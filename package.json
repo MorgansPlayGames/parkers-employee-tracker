@@ -1,0 +1,29 @@
+{
+  "name": "parkers-employee-tracker",
+  "version": "1.0.0",
+  "description": "terminal code to interact with employeedb",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "inquirer": "^7.3.3",
+    "console.table": "^0.10.0",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MorgansPlayGames/parkers-employee-tracker.git"
+  },
+  "author": "Parker Morgan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MorgansPlayGames/parkers-employee-tracker/issues"
+  },
+  "homepage": "https://github.com/MorgansPlayGames/parkers-employee-tracker#readme"
+}
