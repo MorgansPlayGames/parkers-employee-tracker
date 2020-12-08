@@ -29,7 +29,6 @@ function startQ() {
     inquirer
     .prompt(q.homeBase)
     .then(answer => {
-        console.log(answer)
         switch(answer.homeBase){
             case 'view all employees' : getEmployees(); break;
             case 'view all employees by department' : getEmployees('department'); break;
@@ -184,7 +183,7 @@ function addRole(){
             });
     });
 }
-//asks which employee they would like to delete and deletes the employee
+//asks which employee they would like to delete and deletes the employee deassigning any employees of said manager
 function removeEmployee(){
     connection.query(queryList.managerList, function(err, res){
         if (err) throw err;

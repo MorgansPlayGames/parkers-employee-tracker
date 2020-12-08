@@ -3,8 +3,14 @@ Track who manages who with this employee tracker
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[Link to repository](https:)
-[Video of parkers-readme-gen in action](https://)
+[Link to repository](https://github.com/MorgansPlayGames/parkers-employee-tracker)
+
+[Video of parkers-employee-tracker in action](https://drive.google.com/file/d/1F-Ua20hTp_jy1ZsOoWI9o9vWXVzCyvvH/view)
+
+![View All Employees](./images/Screenshot1.png)
+
+![View Employees by Department](./images/Screenshot2.png)
+
 
 1. [ Description. ](#description)
 2. [ Installation ](#installation-instructions)
