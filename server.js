@@ -90,13 +90,18 @@ function addEmployee(dept){
     connection.query(queryList.managerList, function(err, res){
         if (err) throw err;
         managerList = res;
-        let employeeList = res.map(employee => employee.name).push('none');
-        choices.push(new q.queryAdd("manager", "does this employee have a manager?", employeeList));
+        let employeeNames = managerList.map(e => e.name)
+        employeeNames.push('none');
+        let addQuery = new q.queryAdd("manager", "does this employee have a manager?", employeeNames);
+        choices.push(addQuery);
     });
     connection.query(roleQuery, function(err, res){
         if (err) throw err;
-        choices.push(new q.queryAdd('role', 'What is this employees title?', res.map(role => role.title)));  
-        
+        let roleList = res;
+        let roleNames = res.map(role => role.title)
+        let addQuery = new q.queryAdd('role', 'What is this employees title?', roleNames);
+        choices.push(addQuery);  
+
         inquirer
             .prompt(choices)
             .then(answer => {
@@ -189,11 +194,15 @@ function removeEmployee(){
             .prompt(choices)
             .then(answer => {
                 let id = list.filter(e => e.name === answer.delete).map(id => id.id).shift()
-                connection.query(queryList.deleteEmployee, {id:id}, function(err, res){
+                connection.query(queryList.updateEmployee, [{manager_id:null},{manager_id:id}], function(err, res){
                     if (err) throw err;
-                    console.log("Employee deleted.")
-                    startQ();
-                });
+                    console.log("employees managed by this one have been deassigned")
+                    connection.query(queryList.deleteEmployee, {id:id}, function(err, res){
+                        if (err) throw err;
+                        console.log("Employee deleted.")
+                        startQ();
+                    });
+                })
             })
             .catch(err => {
                 if (err) throw err;
@@ -307,7 +316,8 @@ function updateManager(){
             .prompt([new q.queryAdd('employee', 'Which employee did you want to update?', employeeNames)])
             .then(answer => {
                 let employee = answer.employee
-                let newEmployeeNames = employeeNames.filter(e => e != answer.employee).push("none");
+                let newEmployeeNames = employeeNames.filter(e => e != answer.employee);
+                newEmployeeNames.push("none");
                 inquirer
                     .prompt([new q.queryAdd('manager', 'Which manager will this employee assigned', newEmployeeNames)])
                     .then(answer => {
