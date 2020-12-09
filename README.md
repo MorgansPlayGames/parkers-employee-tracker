@@ -13,6 +13,7 @@ Track who manages who with this employee tracker
 
 
 1. [ Description. ](#description)
+2. [ Technology Used.](#technology-used)
 2. [ Installation ](#installation-instructions)
 3. [ Usage Information ](#usage-information)
 4. [ Contribution Guidelines ](#contribution-guidelines)
@@ -21,6 +22,15 @@ Track who manages who with this employee tracker
 
 ## Description:
     Terminal that will interact with an employeedb to add modify and remove employees, roles, and departments
+
+## Technology Used
+    JS
+    SQL
+    Node:
+        Inquirer
+        Mysql
+        Console.table
+
 
 ### Installation Instructions
     Download
